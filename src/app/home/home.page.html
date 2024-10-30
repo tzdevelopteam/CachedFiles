@@ -1,0 +1,11 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Cached File </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <img
+    [src]="'https://github.com/ionic-team/ionic-framework/raw/main/.github/assets/logo.png?raw=true' | cachedFile | async"
+  />
+</ion-content>
