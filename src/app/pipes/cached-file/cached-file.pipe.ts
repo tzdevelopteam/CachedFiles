@@ -1,8 +1,9 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Pipe, PipeTransform } from "@angular/core";
+import { Capacitor } from "@capacitor/core";
+import { Filesystem, Directory } from "@capacitor/filesystem";
 
 @Pipe({
-  name: 'cachedFile',
+  name: "cachedFile",
   standalone: true,
   pure: true,
 })
@@ -10,7 +11,7 @@ export class CachedFilePipe implements PipeTransform {
   async transform(fileUrl?: string): Promise<string | undefined> {
     if (!fileUrl) return undefined;
 
-    const fileName = fileUrl.split('/').pop();
+    const fileName = fileUrl.split("/").pop();
 
     if (!fileName) return fileUrl;
 
@@ -26,7 +27,7 @@ export class CachedFilePipe implements PipeTransform {
         directory: Directory.Cache,
         path: fileName,
       });
-      return uri;
+      return Capacitor.convertFileSrc(uri);
     } catch (error) {
       return undefined;
     }
@@ -42,7 +43,11 @@ export class CachedFilePipe implements PipeTransform {
         url: fileUrl,
         directory: Directory.Cache,
       });
-      return path;
+      if (!path) {
+        return fileUrl;
+      }
+
+      return Capacitor.convertFileSrc(path);
     } catch (error) {
       return fileUrl;
     }
